@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TGMT Dream Prediction Dashboard</title>
+    <link rel="stylesheet" href="./styles.css?v=20260609-structure" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="site-header" aria-label="Điều hướng">
+        <div class="brand">
+          <div class="brand-mark">TG</div>
+          <div>
+            <strong>TGMT</strong>
+            <span>Dự đoán giấc mơ</span>
+          </div>
+        </div>
+        <nav class="tabs-menu" role="tablist" aria-label="Dashboard sections">
+          <a class="tab-link active" role="tab" aria-selected="true" href="#overview" data-tab="overview">
+            Tổng quan
+            <span class="tab-indicator"></span>
+          </a>
+          <a class="tab-link" role="tab" aria-selected="false" href="#models" data-tab="models">
+            Mô hình
+            <span class="tab-indicator"></span>
+          </a>
+          <a class="tab-link" role="tab" aria-selected="false" href="#charts" data-tab="charts">
+            Biểu đồ
+            <span class="tab-indicator"></span>
+          </a>
+          <a class="tab-link" role="tab" aria-selected="false" href="#predict" data-tab="predict">
+            Dự đoán
+            <span class="tab-indicator"></span>
+          </a>
+          <a class="tab-link" role="tab" aria-selected="false" href="#data" data-tab="data">
+            Dữ liệu mẫu
+            <span class="tab-indicator"></span>
+          </a>
+        </nav>
+      </header>
+
+      <main class="content">
+        <section class="topbar" id="overview">
+          <div class="title-block">
+            <p class="eyebrow">TGMT analytics</p>
+            <h1>Dự đoán giấc mơ</h1>
+            <p class="page-subtitle">Theo dõi dữ liệu huấn luyện, hiệu năng mô hình và kết quả phân lớp 4 nhãn.</p>
+          </div>
+          <div class="header-actions">
+            <div class="status-pill">
+              <span></span>
+              <strong id="generatedAt">Đang tải</strong>
+            </div>
+            <div class="model-pill">
+              <small>Best model</small>
+              <strong>MLP 94.00%</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="kpi-grid" aria-label="Chỉ số tổng quan">
+          <article class="kpi">
+            <span>Số mẫu</span>
+            <strong id="rowsCount">0</strong>
+            <small>dream_data_vn.csv</small>
+          </article>
+          <article class="kpi">
+            <span>Đặc trưng</span>
+            <strong id="featureCount">0</strong>
+            <small>Đầu vào mô hình</small>
+          </article>
+          <article class="kpi">
+            <span>Số lớp</span>
+            <strong id="classCount">0</strong>
+            <small>Ác mộng, Mơ đẹp, Ngủ sâu, Không mơ</small>
+          </article>
+          <article class="kpi accent">
+            <span>Model tốt nhất</span>
+            <strong id="bestModel">-</strong>
+            <small id="bestAccuracy">-</small>
+          </article>
+        </section>
+
+        <section class="insight-grid" id="quickInsights" aria-label="Kết luận nhanh"></section>
+
+        <section class="panel-grid">
+          <article class="panel wide">
+            <div class="panel-head">
+              <h2>Phân bố nhãn</h2>
+              <span>4 lớp</span>
+            </div>
+            <div class="label-bars" id="labelBars"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <h2>Hồ sơ lớp</h2>
+              <span>trung bình</span>
+            </div>
+            <div class="class-list" id="classProfiles"></div>
+          </article>
+        </section>
+
+        <section class="panel" id="models">
+          <div class="panel-head">
+            <div>
+              <h2>Bảng xếp hạng thuật toán</h2>
+              <p>So sánh hiệu năng trên tập kiểm thử 30%.</p>
+            </div>
+            <span>Accuracy / Precision / Recall / F1</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Thuật toán</th>
+                  <th>Accuracy</th>
+                  <th>Precision</th>
+                  <th>Recall</th>
+                  <th>F1</th>
+                </tr>
+              </thead>
+              <tbody id="modelTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Thống kê đặc trưng</h2>
+              <p>Tóm tắt phân phối của 7 biến đầu vào đang dùng để train.</p>
+            </div>
+            <span>mean / std / min / max</span>
+          </div>
+          <div class="feature-grid" id="featureCards"></div>
+        </section>
+
+        <section class="panel" id="charts">
+          <div class="panel-head">
+            <div>
+              <h2>Biểu đồ phân tích</h2>
+              <p>Lọc nhanh theo nhóm biểu đồ để tập trung vào phần đang cần xem.</p>
+            </div>
+            <div class="chart-filter" id="chartFilter" aria-label="Lọc biểu đồ">
+              <button class="active" type="button" data-filter="all">Tất cả</button>
+              <button type="button" data-filter="distribution">Phân bố</button>
+              <button type="button" data-filter="model">Mô hình</button>
+              <button type="button" data-filter="analysis">Phân tích</button>
+            </div>
+          </div>
+          <div class="chart-grid" id="chartGrid"></div>
+        </section>
+
+        <section class="panel" id="predict">
+          <div class="panel-head">
+            <div>
+              <h2>Dự đoán thử</h2>
+              <p>Ước lượng nhanh ngay trên trình duyệt theo logic scoring của tập nhãn.</p>
+            </div>
+            <span>frontend scoring</span>
+          </div>
+          <div class="predict-layout">
+            <form class="predict-form" id="predictForm"></form>
+            <div class="prediction-card" id="predictionCard">
+              <span>Kết quả</span>
+              <strong>Nhập chỉ số để dự đoán</strong>
+              <p>Form này chạy hoàn toàn trong trình duyệt. Model `.pkl` vẫn nằm ở project Python.</p>
+              <div class="prob-list" id="probList"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="data">
+          <div class="panel-head">
+            <h2>Dữ liệu mẫu</h2>
+            <span>80 dòng random seed 42</span>
+          </div>
+          <div class="table-tools">
+            <input id="searchInput" type="search" placeholder="Lọc theo nhãn hoặc giá trị..." />
+            <select id="pageSize" aria-label="Số dòng mỗi trang">
+              <option value="10">10 dòng</option>
+              <option value="25" selected>25 dòng</option>
+              <option value="50">50 dòng</option>
+            </select>
+            <button id="clearSearch" type="button">Xóa lọc</button>
+          </div>
+          <div class="table-wrap data-table">
+            <table>
+              <thead id="sampleHead"></thead>
+              <tbody id="sampleBody"></tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span id="pageInfo">-</span>
+            <div>
+              <button id="prevPage" type="button">Trước</button>
+              <button id="nextPage" type="button">Sau</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="image-lightbox" id="imageLightbox" aria-hidden="true">
+      <img id="lightboxImage" alt="" />
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+
+    <script src="./data.js?v=20260609-structure" charset="utf-8"></script>
+    <script src="./app.js?v=20260609-structure" charset="utf-8"></script>
+  </body>
+</html>
